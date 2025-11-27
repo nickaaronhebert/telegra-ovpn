@@ -4,16 +4,20 @@ import subprocess
 import tempfile
 import hashlib
 from functools import wraps
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'rPrHvg4jgHUPVUNeTF46X'
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'change-me-in-production')
 
 # Configuration
 VPN_DATA = '/opt/vpn-data'
 PKI_ISSUED = f'{VPN_DATA}/pki/issued'
-EASYRSA_PASSWORD = 'drilEacphen2'
+EASYRSA_PASSWORD = os.getenv('EASYRSA_PASSWORD', '')
 ADMIN_USERNAME = 'admin'
-ADMIN_PASSWORD_HASH = '6d14b49c026d980fcf95b2af19c2f60e177c5449b043dbfdea421b3386a1ceda'
+ADMIN_PASSWORD_HASH = os.getenv('ADMIN_PASSWORD_HASH', '')
 
 def login_required(f):
     @wraps(f)
